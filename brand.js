@@ -87,33 +87,47 @@
   /* ---- email signature generator (applications page) ---- */
   const sgName=document.getElementById('sg-name');
   if(sgName){
-    const ids=['name','role','email','web','cid'];
+    const ids=['name','role','email','staff','cid'];
     const el={}; ids.forEach(k=>el[k]=document.getElementById('sg-'+k));
     const prev=document.getElementById('sgp');
-    const dl=document.getElementById('sg-download');
+    const aHtml=document.getElementById('sg-html'), aSvg=document.getElementById('sg-svg'), aPng=document.getElementById('sg-png');
     let logoData=null;
     fetch('logo_icon_fill.png').then(r=>r.blob()).then(b=>{const fr=new FileReader();fr.onload=()=>{logoData=fr.result;build();};fr.readAsDataURL(b);}).catch(()=>{});
     const esc=s=>(s+'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-    const vals=()=>({name:el.name.value||'Name Surname',role:el.role.value||'Division Staff',email:el.email.value||'name@vatssa.org',web:el.web.value||'vatssa.org',cid:el.cid.value.trim()});
-    function sig(v,logo){
-      const cid=v.cid?(' · CID '+esc(v.cid)):'';
+    const vals=()=>({name:el.name.value||'Name Surname',role:el.role.value||'Division Staff',email:el.email.value||'name@vatssa.com',staff:el.staff.value||'VATSSA',cid:el.cid.value.trim()});
+    const detail=v=>v.email+(v.cid?(' · '+v.cid):'');
+    function sigHTML(v,logo){
       return '<table style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif"><tr>'+
         '<td style="padding-right:14px;vertical-align:middle"><img src="'+logo+'" width="52" height="52" alt="VATSSA" style="display:block;border-radius:12px"></td>'+
         '<td style="vertical-align:middle;border-left:2px solid #0197B0;padding-left:14px">'+
         '<div style="font-weight:700;font-size:15px;color:#07262C">'+esc(v.name)+'</div>'+
-        '<div style="font-size:12px;color:#0197B0;margin-top:2px">'+esc(v.role)+' · VATSSA</div>'+
-        '<div style="font-size:11px;color:#5d6b6e;margin-top:3px">'+esc(v.email)+' · '+esc(v.web)+cid+'</div>'+
+        '<div style="font-size:12px;color:#0197B0;margin-top:2px">'+esc(v.role)+' · '+esc(v.staff)+'</div>'+
+        '<div style="font-size:11px;color:#5d6b6e;margin-top:3px">'+esc(detail(v))+'</div>'+
         '</td></tr></table>';
     }
+    function sigSVG(v,logo){
+      return '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="84" viewBox="0 0 480 84">'+
+        '<defs><clipPath id="r"><rect x="2" y="16" width="52" height="52" rx="12"/></clipPath></defs>'+
+        '<image x="2" y="16" width="52" height="52" href="'+logo+'" clip-path="url(#r)"/>'+
+        '<rect x="68" y="15" width="2" height="54" fill="#0197B0"/>'+
+        '<text x="82" y="36" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="bold" fill="#07262C">'+esc(v.name)+'</text>'+
+        '<text x="82" y="54" font-family="Arial,Helvetica,sans-serif" font-size="12.5" fill="#0197B0">'+esc(v.role+' · '+v.staff)+'</text>'+
+        '<text x="82" y="70" font-family="Arial,Helvetica,sans-serif" font-size="11.5" fill="#5d6b6e">'+esc(detail(v))+'</text>'+
+        '</svg>';
+    }
     function build(){
-      const v=vals();
-      prev.innerHTML=sig(v,'logo_icon_fill.svg');
-      const html='<!doctype html><meta charset="utf-8">\n'+sig(v,logoData||'logo_icon_fill.png');
-      dl.href='data:text/html;charset=utf-8,'+encodeURIComponent(html); dl.download='vatssa-email-signature.html';
+      const v=vals(); const logo=logoData||'logo_icon_fill.png';
+      prev.innerHTML=sigHTML(v,'logo_icon_fill.svg');
+      aHtml.href='data:text/html;charset=utf-8,'+encodeURIComponent('<!doctype html><meta charset="utf-8">\n'+sigHTML(v,logo)); aHtml.download='vatssa-signature.html';
+      const svg=sigSVG(v,logo);
+      aSvg.href='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg); aSvg.download='vatssa-signature.svg';
+      const img=new Image();
+      img.onload=()=>{const s=2,cv=document.createElement('canvas');cv.width=480*s;cv.height=84*s;const cx=cv.getContext('2d');cx.scale(s,s);cx.drawImage(img,0,0);try{aPng.href=cv.toDataURL('image/png');aPng.download='vatssa-signature.png';}catch(e){}};
+      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
     }
     ids.forEach(k=>el[k].addEventListener('input',build));
     build();
-    document.getElementById('sg-copy').addEventListener('click',()=>copy(sig(vals(),logoData||'logo_icon_fill.png'),'signature HTML'));
+    document.getElementById('sg-copy').addEventListener('click',()=>copy(sigHTML(vals(),logoData||'logo_icon_fill.png'),'signature HTML'));
   }
 
   /* ---- theme ---- */

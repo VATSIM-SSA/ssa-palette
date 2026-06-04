@@ -46,16 +46,18 @@
             <div class="fields">
               <label>Name<input id="sg-name" type="text" value="Name Surname" autocomplete="off"></label>
               <label>Role<input id="sg-role" type="text" value="Division Staff" autocomplete="off"></label>
-              <label>Email<input id="sg-email" type="text" value="name@vatssa.org" autocomplete="off"></label>
-              <label>Website<input id="sg-web" type="text" value="vatssa.org" autocomplete="off"></label>
+              <label>Email<input id="sg-email" type="text" value="name@vatssa.com" autocomplete="off"></label>
+              <label>Staff Code<input id="sg-staff" type="text" value="VATSSA" placeholder="VATSSA1" autocomplete="off"></label>
               <label>VATSIM CID (optional)<input id="sg-cid" type="text" value="" placeholder="0000000" autocomplete="off"></label>
             </div>
             <div class="sigprev"><div id="sgp"></div></div>
             <div class="sigbtns">
               <button id="sg-copy">Copy HTML</button>
-              <a id="sg-download" class="primary">⤓ Download .html</a>
+              <a id="sg-html" class="primary">⤓ .html</a>
+              <a id="sg-svg">⤓ .svg</a>
+              <a id="sg-png">⤓ .png</a>
             </div>
-            <div class="cap" style="border:0;padding:0;text-align:left;color:var(--muted);font-size:11.5px">Logo is embedded in the download so it works offline in Gmail / Outlook. Paste the HTML into your mail client's signature settings.</div>
+            <div class="cap" style="border:0;padding:0;text-align:left;color:var(--muted);font-size:11.5px">Logo is embedded so HTML &amp; SVG work offline. Paste the HTML into Gmail / Outlook; use PNG or SVG where an image is required.</div>
           </div>
         </div>
       </details>
@@ -68,12 +70,17 @@
             <div class="b">
               <div class="letter">
                 <img class="lwm" src="logo_horizontal_dark.svg" alt="">
-                <div class="lh"></div>
-                <div class="lt s"></div><div class="lt m"></div><div class="lt s"></div><div class="lt m"></div>
-                <div class="lfoot"></div>
+                <div class="lrule"></div>
+                <div class="ltitle"></div>
+                <div class="lver"></div>
+                <div class="lh2"></div>
+                <div class="lt l"></div><div class="lt s"></div><div class="lt m"></div>
+                <div class="ltable"><div class="lthead"></div><div class="ltrow"></div><div class="ltrow alt"></div><div class="ltrow"></div></div>
+                <div class="lt s"></div><div class="lt m"></div>
+                <div class="lfoot"><div class="lfrule"></div><div class="lfb"></div></div>
               </div>
             </div>
-            <div class="cap">Dark wordmark top-left, <b>Teal</b> headings, gradient footer rule. See the <a href="docs.html" style="color:var(--teal)">Documents</a> guide.</div>
+            <div class="cap">Dark wordmark top-left, <b>Teal</b> title &amp; headings, table header in Teal, gradient footer rule. See the <a href="docs.html" style="color:var(--teal)">Documents</a> guide.</div>
           </div>
         </div>
       </details>

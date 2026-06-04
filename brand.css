@@ -23,7 +23,7 @@ body{font-family:'Hanken Grotesk',sans-serif;background:var(--bg);color:var(--te
         letter-spacing:.12em;text-transform:uppercase;color:var(--text);background:var(--bg);
         border:1px solid var(--line);border-radius:100px;padding:8px 14px;cursor:pointer;transition:transform .2s,border-color .2s}
 .toggle:hover{transform:translateY(-2px);border-color:var(--teal)}
-.hero .toggle{position:absolute;top:16px;right:16px;z-index:5}
+.herobar{width:100%;display:flex;justify-content:flex-end;position:relative;z-index:5}
 
 /* ---- home hero ---- */
 .hero{background:var(--bg);padding:48px 34px 50px;position:relative;overflow:hidden;
@@ -277,12 +277,21 @@ details.coll:first-of-type{border-top:1px solid var(--line)}
 .sig .nme{font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--text)}
 .sig .rl{font-family:'Hanken Grotesk',sans-serif;font-size:12px;color:var(--teal)}
 .sig .det{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);margin-top:3px}
-.letter{width:200px;height:264px;background:#F8F3F0;border-radius:8px;box-shadow:0 10px 26px rgba(0,0,0,.35);padding:20px;display:flex;flex-direction:column;gap:11px}
-.letter .lwm{height:24px;align-self:flex-start}
-.letter .lh{height:8px;width:62%;background:#0197B0;border-radius:3px;margin-top:6px}
-.letter .lt{height:5px;border-radius:3px;background:rgba(7,38,44,.16)}
-.letter .lt.s{width:92%}.letter .lt.m{width:74%}
-.letter .lfoot{margin-top:auto;height:4px;background:linear-gradient(90deg,#0197B0,#7BD758);border-radius:3px}
+.letter{width:248px;min-height:336px;background:#F8F3F0;border-radius:8px;box-shadow:0 12px 28px rgba(0,0,0,.4);padding:20px;display:flex;flex-direction:column;gap:7px;color:#07262C}
+.letter .lwm{height:20px;align-self:flex-start}
+.letter .lrule{height:2px;background:#0197B0;border-radius:2px;margin:3px 0 5px}
+.letter .ltitle{height:10px;width:72%;background:#0197B0;border-radius:3px}
+.letter .lver{height:5px;width:42%;background:rgba(7,38,44,.28);border-radius:3px;margin-top:1px}
+.letter .lh2{height:6px;width:50%;background:#0197B0;opacity:.85;border-radius:3px;margin-top:8px}
+.letter .lt{height:4px;border-radius:3px;background:rgba(7,38,44,.16)}
+.letter .lt.l{width:100%}.letter .lt.s{width:92%}.letter .lt.m{width:78%}
+.letter .ltable{margin-top:7px;border:1px solid rgba(7,38,44,.12);border-radius:4px;overflow:hidden}
+.letter .lthead{height:11px;background:#0197B0}
+.letter .ltrow{height:9px;background:#fff;border-top:1px solid rgba(7,38,44,.08)}
+.letter .ltrow.alt{background:rgba(1,151,176,.09)}
+.letter .lfoot{margin-top:auto;padding-top:9px}
+.letter .lfrule{height:3px;background:linear-gradient(90deg,#0197B0,#7BD758);border-radius:3px}
+.letter .lfb{height:4px;width:46%;background:rgba(7,38,44,.22);border-radius:3px;margin-top:7px}
 .banner{width:100%;height:140px;border-radius:12px;background:linear-gradient(120deg,#0197B0,#7BD758);
      display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)}
 .banner img{height:56px}
@@ -296,8 +305,8 @@ details.coll:first-of-type{border-top:1px solid var(--line)}
      border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none;transition:border-color .18s}
 .fields input:focus{border-color:var(--teal)}
 .sigprev{background:#F8F3F0;border:1px solid var(--line);border-radius:12px;padding:18px;overflow-x:auto}
-.sigbtns{display:flex;gap:10px}
-.sigbtns button,.sigbtns a{flex:1;text-align:center;cursor:pointer;font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:13px;
+.sigbtns{display:flex;flex-wrap:wrap;gap:10px}
+.sigbtns button,.sigbtns a{flex:1 1 110px;text-align:center;cursor:pointer;font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:13px;
      border-radius:11px;padding:13px;text-decoration:none;border:1px solid var(--line);background:transparent;color:var(--text);transition:transform .18s,border-color .18s}
 .sigbtns .primary{background:linear-gradient(135deg,var(--teal),var(--green));color:var(--dark);border:0}
 .sigbtns button:hover,.sigbtns a:hover{transform:translateY(-2px);border-color:var(--teal)}
