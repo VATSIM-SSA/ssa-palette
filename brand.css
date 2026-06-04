@@ -86,12 +86,12 @@ body{font-family:'Hanken Grotesk',sans-serif;background:var(--bg);color:var(--te
 .chip.bg{background:var(--dark);color:var(--light);border:1px solid var(--line)}
 .chip.light{background:var(--light);color:var(--dark);border:1px solid var(--line)}
 
-.grad{position:relative;height:78px;border-radius:16px;background:linear-gradient(90deg,var(--teal),var(--green));
+.grad{position:relative;height:92px;border-radius:16px;background:linear-gradient(90deg,var(--teal),var(--green));
       box-shadow:0 8px 24px rgba(0,0,0,.3);display:flex;align-items:flex-end;justify-content:space-between;
-      padding:12px 16px;cursor:crosshair;overflow:hidden;transition:box-shadow .22s}
+      padding:14px;cursor:crosshair;overflow:hidden;transition:box-shadow .22s}
 .grad:hover{box-shadow:0 14px 30px rgba(0,0,0,.4)}
-.grad span{font-family:'Jost',sans-serif;font-weight:500;font-size:12px;letter-spacing:.04em;color:var(--light);pointer-events:none}
-.grad span:last-child{color:var(--dark)}
+.grad span{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:11.5px;letter-spacing:.02em;
+      color:#F8F3F0;background:rgba(7,38,44,.55);padding:5px 10px;border-radius:100px;pointer-events:none}
 .gsamp{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.9);box-shadow:0 0 6px rgba(0,0,0,.4);
        pointer-events:none;opacity:0;transition:opacity .12s}
 .gtip{position:absolute;top:8px;transform:translateX(-50%);background:#07262C;color:#F8F3F0;font-family:'JetBrains Mono',monospace;
@@ -111,18 +111,36 @@ body{font-family:'Hanken Grotesk',sans-serif;background:var(--bg);color:var(--te
 .f-hanken{font-family:'Hanken Grotesk',sans-serif;font-weight:600}
 .f-mono{font-family:'JetBrains Mono',monospace}
 
-/* ---- nav buttons (home) — colourful, no icon ---- */
+/* ---- nav buttons (home) — style set by [data-btn] on <html>; see NAV_BUTTON_STYLE in brand.js ---- */
 .nav{display:flex;flex-direction:column;gap:14px}
-.navbtn{display:flex;align-items:center;gap:16px;text-decoration:none;border:0;border-radius:16px;padding:22px 24px;
-        background:linear-gradient(135deg,var(--teal),var(--green));box-shadow:0 10px 26px rgba(0,0,0,.3);
-        transition:transform .2s,box-shadow .2s}
-.navbtn:nth-child(even){background:linear-gradient(135deg,var(--green),var(--teal))}
-.navbtn:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(0,0,0,.42)}
+.navbtn{display:flex;align-items:center;gap:16px;text-decoration:none;border-radius:16px;padding:22px 24px;
+        transition:transform .2s,box-shadow .2s,border-color .2s,background .2s;
+        background:rgba(1,151,176,.14);border:1px solid rgba(1,151,176,.35)}   /* default = tint */
 .navbtn .nt{flex:1}
-.navbtn .nt b{font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--dark);display:block}
-.navbtn .nt i{font-family:'Hanken Grotesk',sans-serif;font-style:normal;font-size:13px;color:rgba(7,38,44,.72);display:block;margin-top:3px}
-.navbtn .nar{font-family:'Jost',sans-serif;font-size:22px;color:var(--dark);transition:transform .2s}
+.navbtn .nt b{font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--text);display:block}
+.navbtn .nt i{font-family:'Hanken Grotesk',sans-serif;font-style:normal;font-size:13px;color:var(--muted);display:block;margin-top:3px}
+.navbtn .nar{font-family:'Jost',sans-serif;font-size:22px;color:var(--teal);transition:transform .2s}
+.navbtn:hover{transform:translateY(-3px);border-color:var(--teal);background:rgba(1,151,176,.2)}
 .navbtn:hover .nar{transform:translateX(4px)}
+
+/* gradient */
+[data-btn="gradient"] .navbtn{background:linear-gradient(135deg,var(--teal),var(--green));border:0;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+[data-btn="gradient"] .navbtn:nth-child(even){background:linear-gradient(135deg,var(--green),var(--teal))}
+[data-btn="gradient"] .navbtn .nt b,[data-btn="gradient"] .navbtn .nar{color:var(--dark)}
+[data-btn="gradient"] .navbtn .nt i{color:rgba(7,38,44,.72)}
+[data-btn="gradient"] .navbtn:hover{box-shadow:0 18px 36px rgba(0,0,0,.42)}
+/* accent — dark card + teal bar */
+[data-btn="accent"] .navbtn{background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--teal);box-shadow:0 8px 22px rgba(0,0,0,.28)}
+[data-btn="accent"] .navbtn:hover{border-color:var(--teal)}
+/* outline */
+[data-btn="outline"] .navbtn{background:transparent;border:1.5px solid var(--teal)}
+[data-btn="outline"] .navbtn .nt b,[data-btn="outline"] .navbtn .nar{color:var(--teal)}
+[data-btn="outline"] .navbtn:hover{background:rgba(1,151,176,.08)}
+/* solid teal */
+[data-btn="solid"] .navbtn{background:var(--teal);border:0;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+[data-btn="solid"] .navbtn .nt b,[data-btn="solid"] .navbtn .nar{color:#F8F3F0}
+[data-btn="solid"] .navbtn .nt i{color:rgba(248,243,240,.8)}
+/* tint = default (handled by base .navbtn) */
 
 /* ---- logo light/dark showcase ---- */
 .lgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -167,7 +185,7 @@ body{font-family:'Hanken Grotesk',sans-serif;background:var(--bg);color:var(--te
 .specgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .spec{border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .spec .tile{background:var(--dark);display:flex;align-items:center;justify-content:center;padding:26px;min-height:140px}
-.spec .clear{position:relative;padding:22px;outline:1.5px dashed var(--green);border-radius:6px;display:inline-flex}
+.spec .clear{position:relative;padding:12px;outline:1.5px dashed var(--green);border-radius:6px;display:inline-flex}
 .spec .clear img{height:44px;display:block}
 .spec .mini{display:flex;align-items:flex-end;gap:18px}
 .spec .mini .u{display:flex;flex-direction:column;align-items:center;gap:7px}
@@ -221,7 +239,7 @@ details.coll:first-of-type{border-top:1px solid var(--line)}
 .coll summary .ln{flex:1}                 /* invisible spacer (no extra line) */
 .coll summary .chev{font-size:11px;color:var(--muted);transition:transform .25s}
 .coll[open] summary .chev{transform:rotate(180deg)}
-.coll .cbody{padding:2px 2px 26px;animation:fade .3s ease}
+.coll .cbody{padding:2px 2px 26px;overflow:hidden}   /* height animated via JS */
 @keyframes fade{from{opacity:0}to{opacity:1}}
 
 .credit{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);text-align:center;
@@ -270,6 +288,20 @@ details.coll:first-of-type{border-top:1px solid var(--line)}
 .banner img{height:56px}
 .appcard .cap{font-family:'Hanken Grotesk',sans-serif;font-size:11.5px;color:var(--muted);padding:11px 16px;border-top:1px solid var(--line);text-align:center}
 
+/* ---- email signature generator ---- */
+.siggen{display:flex;flex-direction:column;gap:16px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fields label{display:flex;flex-direction:column;gap:5px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fields input{font-family:'Hanken Grotesk',sans-serif;font-size:13px;color:var(--text);background:var(--code-bg);
+     border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none;transition:border-color .18s}
+.fields input:focus{border-color:var(--teal)}
+.sigprev{background:#F8F3F0;border:1px solid var(--line);border-radius:12px;padding:18px;overflow-x:auto}
+.sigbtns{display:flex;gap:10px}
+.sigbtns button,.sigbtns a{flex:1;text-align:center;cursor:pointer;font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:13px;
+     border-radius:11px;padding:13px;text-decoration:none;border:1px solid var(--line);background:transparent;color:var(--text);transition:transform .18s,border-color .18s}
+.sigbtns .primary{background:linear-gradient(135deg,var(--teal),var(--green));color:var(--dark);border:0}
+.sigbtns button:hover,.sigbtns a:hover{transform:translateY(-2px);border-color:var(--teal)}
+
 /* ---- voice / mission ---- */
 .tagline{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:.03em;font-size:25px;color:var(--text);padding:6px 0 14px}
 .tagline b{font-weight:500;background:linear-gradient(90deg,var(--teal),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -278,7 +310,8 @@ details.coll:first-of-type{border-top:1px solid var(--line)}
 .draft{display:inline-block;font-family:'Jost',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
      color:#e0a04a;border:1px solid #e0a04a;border-radius:100px;padding:3px 9px;margin-left:8px;vertical-align:middle}
 .vlist{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
-.vcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.vcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:transform .18s,border-color .18s,box-shadow .18s;cursor:default}
+.vcard:hover{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 12px 26px rgba(0,0,0,.3)}
 .vcard .vt{font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:4px}
 .vcard .vd{font-family:'Hanken Grotesk',sans-serif;font-size:12px;line-height:1.5;color:var(--muted)}
 
@@ -290,21 +323,30 @@ details.coll:first-of-type{border-top:1px solid var(--line)}
   .hero{padding:42px 24px 44px}
 }
 @media(max-width:560px){
-  .grid,.lgrid,.use,.specgrid,.demos,.pairs,.vlist{grid-template-columns:1fr}
+  .grid,.lgrid,.use,.specgrid,.demos,.pairs,.vlist,.fields{grid-template-columns:1fr}
   .icons{gap:14px}
-  .icons .frame{width:130px;height:130px}
+  .icons .frame{width:132px;height:132px}
   .hero{gap:16px;padding:38px 18px 40px}
-  .ptitle{font-size:23px}
-  .pagehead img{width:46px;height:46px}
-  .navbtn{padding:18px 18px}
+  .ptitle{font-size:22px}
+  .pagehead{padding:22px 18px 4px;gap:13px}
+  .pagehead img{width:44px;height:44px}
+  .topbar{padding:14px 16px}
+  .navbtn{padding:17px 18px}
   .navbtn .nt b{font-size:15px}
-  .chip{height:128px;padding:16px}
-  .chip .hx{font-size:23px}
-  .body{padding:24px 18px 30px}
+  .navbtn .nt i{font-size:12px}
+  .chip{height:124px;padding:16px}
+  .chip .hx{font-size:22px}
+  .body{padding:24px 16px 30px}
+  .lbl,.coll summary{font-size:10px;letter-spacing:.18em}
   .toggle{padding:7px 11px;font-size:10px}
   .back{padding:7px 11px;font-size:10px}
+  .grad{height:84px}
+  .lpanel img{max-width:200px}
 }
 @media(max-width:400px){
-  .icons .frame{width:112px;height:112px}
-  .hero .toggle{position:static;margin-bottom:6px}
+  .icons .frame{width:116px;height:116px}
+  .hero{padding:34px 14px 36px}
+  .body{padding:22px 13px 28px}
+  .chip .hx{font-size:20px}
+  .sigbtns{flex-direction:column}
 }

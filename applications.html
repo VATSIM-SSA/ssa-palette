@@ -40,32 +40,22 @@
       </details>
 
       <details class="coll">
-        <summary><span>Social Banner</span><span class="ln"></span><span class="chev">▾</span></summary>
+        <summary><span>Email Signature · Generator</span><span class="ln"></span><span class="chev">▾</span></summary>
         <div class="cbody">
-          <div class="appcard">
-            <div class="h">Header / Cover</div>
-            <div class="b"><div class="banner"><img src="logo_horizontal_white.svg" alt="banner"></div></div>
-            <div class="cap">White wordmark centred on the brand gradient. Keep generous clear space.</div>
-          </div>
-        </div>
-      </details>
-
-      <details class="coll">
-        <summary><span>Email Signature</span><span class="ln"></span><span class="chev">▾</span></summary>
-        <div class="cbody">
-          <div class="appcard">
-            <div class="h">Signature Block</div>
-            <div class="b">
-              <div class="sig">
-                <img class="si" src="logo_icon_fill.svg" alt="">
-                <div class="sl">
-                  <div class="nme">Name Surname</div>
-                  <div class="rl">Division Staff · VATSSA</div>
-                  <div class="det">name@vatssa.org · vatssa.org</div>
-                </div>
-              </div>
+          <div class="siggen">
+            <div class="fields">
+              <label>Name<input id="sg-name" type="text" value="Name Surname" autocomplete="off"></label>
+              <label>Role<input id="sg-role" type="text" value="Division Staff" autocomplete="off"></label>
+              <label>Email<input id="sg-email" type="text" value="name@vatssa.org" autocomplete="off"></label>
+              <label>Website<input id="sg-web" type="text" value="vatssa.org" autocomplete="off"></label>
+              <label>VATSIM CID (optional)<input id="sg-cid" type="text" value="" placeholder="0000000" autocomplete="off"></label>
             </div>
-            <div class="cap">Icon + name, role in <b>Teal</b>, teal divider rule. Keep details in monospace or your mail font.</div>
+            <div class="sigprev"><div id="sgp"></div></div>
+            <div class="sigbtns">
+              <button id="sg-copy">Copy HTML</button>
+              <a id="sg-download" class="primary">⤓ Download .html</a>
+            </div>
+            <div class="cap" style="border:0;padding:0;text-align:left;color:var(--muted);font-size:11.5px">Logo is embedded in the download so it works offline in Gmail / Outlook. Paste the HTML into your mail client's signature settings.</div>
           </div>
         </div>
       </details>
