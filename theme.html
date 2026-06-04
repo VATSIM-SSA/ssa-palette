@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VATSSA · Web Theme &amp; Code</title>
+<link rel="icon" href="logo_icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
+<script>(function(){var t=localStorage.getItem('vatssa-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+  <div class="card">
+    <div class="topbar">
+      <a class="back" href="index.html">← Brand Home</a>
+      <button class="toggle" aria-label="Toggle theme"><span class="tgIcon">☀</span><span class="tgTxt">Light</span></button>
+    </div>
+    <div class="pagehead">
+      <img src="logo_icon.svg" alt="VATSSA">
+      <div><div class="ptitle">Web Theme &amp; Code</div><div class="psub">VATSSA Brand Guidelines</div></div>
+    </div>
+
+    <div class="body">
+      <details class="coll">
+        <summary><span>Website Theme · .env</span><span class="ln"></span><span class="chev">▾</span></summary>
+        <div class="cbody">
+          <div class="envnote">Brand-aligned values that <b>follow the active theme</b> (surfaces flip light/dark, accents stay). <b>Only one accent slot? Use Primary → Teal <code>#0197B0</code>.</b></div>
+          <div class="envlist">
+            <div class="envrow"><span class="sw" style="background:#0197B0"></span><div><div class="nm">VITE_THEME_PRIMARY</div><div class="ds">Primary accent · <b>Teal</b></div></div><div class="hexwrap"><span class="hex">#0197B0</span><span class="was">was #1a475f</span></div></div>
+            <div class="envrow"><span class="sw" style="background:#7BD758"></span><div><div class="nm">VITE_THEME_SECONDARY</div><div class="ds">Secondary accent · <b>Green</b></div></div><div class="hexwrap"><span class="hex">#7BD758</span><span class="was">was #484b4c</span></div></div>
+            <div class="envrow"><span class="sw" data-dark="#07262C" data-light="#F8F3F0" style="background:#07262C"></span><div><div class="nm">VITE_THEME_TERTIARY</div><div class="ds">Surface · follows theme</div></div><div class="hexwrap"><span class="hex" data-dark="#07262C" data-light="#F8F3F0">#07262C</span><span class="was">was #011328</span></div></div>
+            <div class="envrow"><span class="sw" style="background:#0197B0"></span><div><div class="nm">VITE_THEME_INFO</div><div class="ds">Info · <b>Teal</b></div></div><div class="hexwrap"><span class="hex">#0197B0</span><span class="was">was #17a2b8</span></div></div>
+            <div class="envrow"><span class="sw" style="background:#7BD758"></span><div><div class="nm">VITE_THEME_SUCCESS</div><div class="ds">Success · <b>Green</b></div></div><div class="hexwrap"><span class="hex">#7BD758</span><span class="was">was #41826e</span></div></div>
+            <div class="envrow"><span class="sw" style="background:#ff9800"></span><div><div class="nm">VITE_THEME_WARNING</div><div class="ds">Warning · functional</div></div><div class="hexwrap"><span class="hex">#ff9800</span><span class="was">keep</span></div></div>
+            <div class="envrow"><span class="sw" style="background:#b63f3f"></span><div><div class="nm">VITE_THEME_DANGER</div><div class="ds">Danger · functional</div></div><div class="hexwrap"><span class="hex">#b63f3f</span><span class="was">keep</span></div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="coll">
+        <summary><span>Code Reference · :root</span><span class="ln"></span><span class="chev">▾</span></summary>
+        <div class="cbody">
+          <pre class="code"><span class="c">:root {</span>
+  <span class="k">--primary-colour</span>: <span class="v">#07262C</span>;
+  <span class="k">--primary-light-colour</span>: <span class="v">#0197B0</span>;
+  <span class="k">--scrollbar-track-color</span>: <span class="v">#07262C</span>;
+  <span class="k">--scrollbar-thumb-color</span>: <span class="v">#0197B0</span>;
+  <span class="k">--scrollbar-size</span>: <span class="v">5px</span>;
+  <span class="c">/* Cloudflare Zero Trust access page bg */</span>
+  <span class="k">--access-page-background</span>: <span class="v">#07262C</span>;
+<span class="c">}</span></pre>
+          <div class="note"><b>Cloudflare Zero Trust access page background → <code>#07262C</code></b> (the standardized <code>--primary-colour</code> / brand dark). Accent = <code>#0197B0</code>.</div>
+        </div>
+      </details>
+
+      <details class="coll">
+        <summary><span>Accessibility · Contrast</span><span class="ln"></span><span class="chev">▾</span></summary>
+        <div class="cbody">
+          <div class="envnote">Approved pairings (WCAG). <b>Teal</b> is a mid-tone — use it for large text, icons &amp; fills, not small body text. <b>Never put white text on Green.</b></div>
+          <div class="pairs">
+            <div class="pair"><div class="swat" style="background:#07262C;color:#F8F3F0"><span class="t">Aa Brand</span></div><div class="meta">Dark + Light<span class="r ok">13.5:1 ✓ AAA</span></div></div>
+            <div class="pair"><div class="swat" style="background:#F8F3F0;color:#07262C"><span class="t">Aa Brand</span></div><div class="meta">Light + Dark<span class="r ok">13.5:1 ✓ AAA</span></div></div>
+            <div class="pair"><div class="swat" style="background:#7BD758;color:#07262C"><span class="t">Aa Brand</span></div><div class="meta">Green + Dark<span class="r ok">8.3:1 ✓ AAA</span></div></div>
+            <div class="pair"><div class="swat" style="background:#07262C;color:#7BD758"><span class="t">Aa Brand</span></div><div class="meta">Green on Dark<span class="r ok">8.3:1 ✓ AAA</span></div></div>
+            <div class="pair"><div class="swat" style="background:#0197B0;color:#F8F3F0"><span class="t">Aa Brand</span></div><div class="meta">Teal + Light<span class="r warn">3.5:1 ⚠ Large</span></div></div>
+            <div class="pair"><div class="swat" style="background:#7BD758;color:#FFFFFF"><span class="t">Aa Brand</span></div><div class="meta">White on Green<span class="r bad">1.8:1 ✗ Avoid</span></div></div>
+          </div>
+        </div>
+      </details>
+
+      <div class="credit">VATSSA Brand Guidelines · Made by George (1768227)</div>
+    </div>
+  </div>
+<script src="brand.js"></script>
+</body>
+</html>

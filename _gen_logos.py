@@ -105,21 +105,22 @@ build_horizontal_png(DARK, "logo_horizontal_dark.png")
 build_horizontal_svg(HEX_OFFW, "logo_horizontal_white.svg")
 build_horizontal_svg(HEX_DARK, "logo_horizontal_dark.svg")
 
-# ============ 2) ICON: light disc + gradient ring border + gradient Africa ============
-RING_IN = 0.435         # inner radius (white disc edge) as fraction of canvas
-RING_W  = 0.050         # ring (gradient border) thickness as fraction of canvas
-AF_BOXH = 0.600         # africa height as fraction of canvas
+# ============ 2) ICON: disc + gradient ring border + gradient Africa ============
+RING_IN = 0.42          # inner radius (disc edge) as fraction of canvas
+RING_W  = 0.045         # ring (gradient border) thickness as fraction of canvas
+AF_BOXH = 0.58          # africa height as fraction of canvas
+HEX_BG  = "#07262C"; BG_RGB = (7,38,44)
 
-def build_icon_png(size, fname, white_fill=True):
+def build_icon_png(size, fname, disc=OFFW):           # disc=RGB tuple, or None for transparent
     SS=4; S=size*SS; c=S//2
     Rin=S*RING_IN; w=S*RING_W; Rout=Rin+w
     yy,xx=np.mgrid[0:S,0:S].astype(float)
     dist=np.sqrt((xx-c)**2+(yy-c)**2)
     img=Image.new("RGBA",(S,S),(0,0,0,0))
-    if white_fill:                                   # white disc (omit -> transparent)
-        disc=np.zeros((S,S,4),np.uint8); disc[...,:3]=OFFW
-        disc[...,3]=np.where(dist<=Rin,255,0).astype(np.uint8)
-        img.alpha_composite(Image.fromarray(disc,"RGBA"))
+    if disc is not None:
+        d=np.zeros((S,S,4),np.uint8); d[...,:3]=disc
+        d[...,3]=np.where(dist<=Rin,255,0).astype(np.uint8)
+        img.alpha_composite(Image.fromarray(d,"RGBA"))
     ring=np.zeros((S,S,4),np.uint8); ring[...,:3]=gradient(S,S)   # gradient border
     ring[...,3]=np.where((dist>=Rin)&(dist<=Rout),255,0).astype(np.uint8)
     img.alpha_composite(Image.fromarray(ring,"RGBA"))
@@ -133,14 +134,14 @@ def build_icon_png(size, fname, white_fill=True):
     img=img.resize((size,size),Image.LANCZOS)
     img.save(PROJ+"\\"+fname); print("saved",fname)
 
-def build_icon_svg(fname, white_fill=True, size=1024):
+def build_icon_svg(fname, disc_hex=HEX_OFFW, size=1024):   # disc_hex=None -> transparent
     c=size/2; Rin=size*RING_IN; w=size*RING_W; Rmid=Rin+w/2
     box_h=size*AF_BOXH; sx=box_h/NA_H
     nw2=NA_W*sx; nh2=NA_H*sx
     tx=(c-nw2/2)-NA_X0*sx; ty=(c-nh2/2)-NA_Y0*sx
     af_path=mask_to_path(na>120, sx, sx, tx, ty, eps=0.5)
-    disc=(f'<circle cx="{c:.0f}" cy="{c:.0f}" r="{Rin:.1f}" fill="{HEX_OFFW}"/>\n'
-          if white_fill else "")
+    disc=(f'<circle cx="{c:.0f}" cy="{c:.0f}" r="{Rin:.1f}" fill="{disc_hex}"/>\n'
+          if disc_hex else "")
     svg=(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}" '
          f'width="{size}" height="{size}">\n<defs>{GRAD_DEF}</defs>\n{disc}'
          f'<circle cx="{c:.0f}" cy="{c:.0f}" r="{Rmid:.1f}" fill="none" '
@@ -148,15 +149,42 @@ def build_icon_svg(fname, white_fill=True, size=1024):
          f'<path fill="url(#vg)" fill-rule="evenodd" d="{af_path}"/>\n</svg>\n')
     open(PROJ+"\\"+fname,"w",encoding="utf-8").write(svg); print("saved",fname)
 
-# solid (white disc) variant
-build_icon_png(1024,"logo_icon.png", True)
-build_icon_png(512,"logo_icon_512.png", True)
-build_icon_png(180,"logo_icon_180.png", True)
-build_icon_svg("logo_icon.svg", True)
-# transparent (white removed) variant
-build_icon_png(1024,"logo_icon_clear.png", False)
-build_icon_png(512,"logo_icon_clear_512.png", False)
-build_icon_svg("logo_icon_clear.svg", False)
+# ---- full-gradient-fill variant (gradient fills the whole tile; white disc + Africa knockout) ----
+FILL_DISC = 0.42        # white disc radius as fraction of canvas (matches RING_IN)
+FILL_AFH  = 0.58        # africa height as fraction of canvas (matches AF_BOXH)
+def build_icon_fill(size, fname):
+    SS=4; S=size*SS; c=S//2
+    img=Image.fromarray(np.dstack([gradient(S,S), np.full((S,S),255,np.uint8)]),"RGBA")
+    yy,xx=np.mgrid[0:S,0:S].astype(float)
+    dist=np.sqrt((xx-c)**2+(yy-c)**2)
+    disc=dist<=S*FILL_DISC
+    af,nw,nh=fit_alpha(na,int(S*FILL_AFH))
+    afm=np.zeros((S,S),bool); px=c-nw//2; py=c-nh//2; afm[py:py+nh,px:px+nw]=af>120
+    white=disc&~afm
+    wl=np.zeros((S,S,4),np.uint8); wl[...,:3]=OFFW; wl[...,3]=np.where(white,255,0).astype(np.uint8)
+    img.alpha_composite(Image.fromarray(wl,"RGBA"))
+    img.resize((size,size),Image.LANCZOS).save(PROJ+"\\"+fname); print("saved",fname)
+
+def build_icon_fill_svg(fname, size=1024):
+    c=size/2; r=size*FILL_DISC
+    sx=(size*FILL_AFH)/NA_H; nw=NA_W*sx; nh=NA_H*sx
+    tx=(c-nw/2)-NA_X0*sx; ty=(c-nh/2)-NA_Y0*sx
+    af_path=mask_to_path(na>120, sx, sx, tx, ty, eps=0.5)
+    circ=f"M {c-r:.1f} {c:.1f} a {r:.1f} {r:.1f} 0 1 0 {2*r:.1f} 0 a {r:.1f} {r:.1f} 0 1 0 {-2*r:.1f} 0 Z"
+    svg=(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}" width="{size}" height="{size}">\n'
+         f'<defs>{GRAD_DEF}</defs>\n<rect width="{size}" height="{size}" fill="url(#vg)"/>\n'
+         f'<path fill="{HEX_OFFW}" fill-rule="evenodd" d="{circ} {af_path}"/>\n</svg>\n')
+    open(PROJ+"\\"+fname,"w",encoding="utf-8").write(svg); print("saved",fname)
+
+# white-disc variant (disc + gradient ring; sits on theme background)
+build_icon_png(1024,"logo_icon.png", OFFW)
+build_icon_png(512,"logo_icon_512.png", OFFW)
+build_icon_png(180,"logo_icon_180.png", OFFW)
+build_icon_svg("logo_icon.svg", HEX_OFFW)
+# full-gradient-fill variant
+build_icon_fill(1024,"logo_icon_fill.png")
+build_icon_fill(180,"logo_icon_fill_180.png")
+build_icon_fill_svg("logo_icon_fill.svg")
 
 # ============ preview ============
 def preview(bg, horiz, out):
