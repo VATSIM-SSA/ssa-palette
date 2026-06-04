@@ -151,6 +151,8 @@ body{font-family:'Hanken Grotesk',sans-serif;background:var(--bg);color:var(--te
 
 /* ---- logo light/dark showcase ---- */
 .lgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lsplit{display:grid;grid-template-columns:1fr 1fr;gap:16px}   /* desktop: dark column | light column */
+.lcol{display:flex;flex-direction:column;gap:16px}
 .lpanel{border-radius:16px;border:1px solid var(--line);overflow:hidden;transition:transform .25s}
 .lpanel:hover{transform:translateY(-3px)}
 .lpanel .pad{padding:30px 24px;display:flex;align-items:center;justify-content:center;min-height:120px}
@@ -339,7 +341,7 @@ details.coll:first-of-type{border-top:1px solid var(--line)}
   .hero{padding:42px 24px 44px}
 }
 @media(max-width:560px){
-  .grid,.lgrid,.use,.specgrid,.demos,.pairs,.vlist,.fields{grid-template-columns:1fr}
+  .grid,.lgrid,.lsplit,.use,.specgrid,.demos,.pairs,.vlist,.fields{grid-template-columns:1fr}
   .icons{gap:14px}
   .icons .frame{width:132px;height:132px}
   .hero{gap:16px;padding:38px 18px 40px}
