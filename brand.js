@@ -26,7 +26,9 @@
 
   document.querySelectorAll('.chip').forEach(c=>{
     c.style.cursor='pointer';
-    c.addEventListener('click',()=>{ if(c.dataset.hex) copy(c.dataset.hex); });
+    const ov=document.createElement('div'); ov.className='copied'; ov.textContent='Copied!'; c.appendChild(ov);
+    c.addEventListener('click',()=>{ if(!c.dataset.hex) return; copy(c.dataset.hex);
+      c.classList.add('copied-show'); clearTimeout(c._ct); c._ct=setTimeout(()=>c.classList.remove('copied-show'),1100); });
   });
   document.querySelectorAll('.envrow').forEach(r=>{
     r.addEventListener('click',()=>{ const h=r.querySelector('.hex'); if(h) copy(h.textContent.trim()); });
@@ -115,19 +117,29 @@
         '<text x="82" y="70" font-family="Arial,Helvetica,sans-serif" font-size="11.5" fill="#5d6b6e">'+esc(detail(v))+'</text>'+
         '</svg>';
     }
-    function build(){
-      const v=vals(); const logo=logoData||'logo_icon_fill.png';
-      prev.innerHTML=sigHTML(v,'logo_icon_fill.svg');
-      aHtml.href='data:text/html;charset=utf-8,'+encodeURIComponent('<!doctype html><meta charset="utf-8">\n'+sigHTML(v,logo)); aHtml.download='vatssa-signature.html';
-      const svg=sigSVG(v,logo);
-      aSvg.href='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg); aSvg.download='vatssa-signature.svg';
-      const img=new Image();
-      img.onload=()=>{const s=2,cv=document.createElement('canvas');cv.width=480*s;cv.height=84*s;const cx=cv.getContext('2d');cx.scale(s,s);cx.drawImage(img,0,0);try{aPng.href=cv.toDataURL('image/png');aPng.download='vatssa-signature.png';}catch(e){}};
-      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
-    }
+    function build(){ prev.innerHTML=sigHTML(vals(),'logo_icon_fill.svg'); }   /* live preview */
     ids.forEach(k=>el[k].addEventListener('input',build));
     build();
-    document.getElementById('sg-copy').addEventListener('click',()=>copy(sigHTML(vals(),logoData||'logo_icon_fill.png'),'signature HTML'));
+    const logoURL=new URL('logo_icon_fill.png',location.href).href;
+    const logoFor=()=>logoData||logoURL;
+    /* Blob downloads (data: URLs are blocked by browsers, esp. text/html) */
+    function save(fname,mime,data){
+      const blob=(data instanceof Blob)?data:new Blob([data],{type:mime});
+      const u=URL.createObjectURL(blob), a=document.createElement('a');
+      a.href=u; a.download=fname; document.body.appendChild(a); a.click();
+      setTimeout(()=>{a.remove(); URL.revokeObjectURL(u);},1500);
+    }
+    document.getElementById('sg-copy').addEventListener('click',()=>copy(sigHTML(vals(),logoFor()),'signature HTML'));
+    aHtml.addEventListener('click',e=>{e.preventDefault();save('vatssa-signature.html','text/html;charset=utf-8','<!doctype html><meta charset="utf-8">\n'+sigHTML(vals(),logoFor()));});
+    aSvg.addEventListener('click',e=>{e.preventDefault();save('vatssa-signature.svg','image/svg+xml;charset=utf-8',sigSVG(vals(),logoFor()));});
+    aPng.addEventListener('click',e=>{e.preventDefault();
+      const svg=sigSVG(vals(),logoData||logoURL), img=new Image();
+      img.onload=()=>{const s=2,cv=document.createElement('canvas');cv.width=480*s;cv.height=84*s;
+        const cx=cv.getContext('2d');cx.scale(s,s);cx.drawImage(img,0,0);
+        cv.toBlob(bl=>{ bl?save('vatssa-signature.png','image/png',bl):copy('PNG blocked — use SVG'); },'image/png');};
+      img.onerror=()=>copy('PNG failed — use SVG');
+      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+    });
   }
 
   /* ---- theme ---- */
