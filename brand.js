@@ -24,18 +24,34 @@
   }
   window.__copy=copy;
 
+  /* small inline "Copied!" pill on any copyable element */
+  function flashPill(el){
+    if(getComputedStyle(el).position==='static') el.style.position='relative';
+    let p=el.querySelector(':scope > .copied-pill');
+    if(!p){ p=document.createElement('span'); p.className='copied-pill'; p.textContent='Copied!'; el.appendChild(p); }
+    p.classList.remove('show'); void p.offsetWidth; p.classList.add('show');
+    clearTimeout(el._fp); el._fp=setTimeout(()=>p.classList.remove('show'),1100);
+  }
+
   document.querySelectorAll('.chip').forEach(c=>{
     c.style.cursor='pointer';
-    const ov=document.createElement('div'); ov.className='copied'; ov.textContent='Copied!'; c.appendChild(ov);
+    const role=c.querySelector('.role');
     c.addEventListener('click',()=>{ if(!c.dataset.hex) return; copy(c.dataset.hex);
-      c.classList.add('copied-show'); clearTimeout(c._ct); c._ct=setTimeout(()=>c.classList.remove('copied-show'),1100); });
+      role.textContent='Copied!'; c.classList.add('copied-show');
+      clearTimeout(c._ct); c._ct=setTimeout(()=>{ role.textContent=roleFor(c); c.classList.remove('copied-show'); },1100); });
   });
   document.querySelectorAll('.envrow').forEach(r=>{
-    r.addEventListener('click',()=>{ const h=r.querySelector('.hex'); if(h) copy(h.textContent.trim()); });
+    const h=r.querySelector('.hex'); if(!h) return;
+    r.addEventListener('click',()=>{
+      if(r._t) return;
+      const val=h.textContent.trim(); copy(val);
+      h.textContent='Copied!'; h.style.color='var(--teal)';
+      r._t=setTimeout(()=>{ h.textContent=val; h.style.color=''; r._t=null; },1100);
+    });
   });
   document.querySelectorAll('.typerow').forEach(r=>{
     r.style.cursor='pointer';
-    r.addEventListener('click',()=>{ const n=r.querySelector('.ti'); if(n) copy(n.textContent.trim(),n.textContent.trim()+' (font)'); });
+    r.addEventListener('click',()=>{ const n=r.querySelector('.ti'); if(!n) return; copy(n.textContent.trim(),n.textContent.trim()+' (font)'); flashPill(r); });
   });
 
   /* ---- interactive gradient sampler ---- */
@@ -55,7 +71,7 @@
     g.addEventListener('mousemove',at);
     g.addEventListener('touchmove',at,{passive:true});
     g.addEventListener('mouseleave',()=>g.classList.remove('sampling'));
-    g.addEventListener('click',()=>copy(g.dataset.samp||'#0197B0'));
+    g.addEventListener('click',()=>{ copy(g.dataset.samp||'#0197B0'); flashPill(g); });
   });
 
   /* ---- smooth accordion (one open at a time) ---- */
